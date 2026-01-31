@@ -125,3 +125,5 @@ wwwroot/node_modules/
 # Ignore publish profiles
 Properties/PublishProfiles/
 
+/coveragereport
+/Application.Tests/TestResults
