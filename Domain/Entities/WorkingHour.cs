@@ -1,10 +1,9 @@
 ﻿
-using Domain.Entities.Common;
-
 namespace Domain.Entities
 {
-    public class WorkingHour : BaseEntity
+    public class WorkingHour : EntityBase
     {
+        public Guid Id { get; set; }
         public Guid EmployeeId { get; set; }
 
         // 0 = Sunday | 6 = Saturday

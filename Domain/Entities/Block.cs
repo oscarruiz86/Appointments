@@ -1,11 +1,9 @@
 ﻿
-
-using Domain.Entities.Common;
-
 namespace Domain.Entities
 {
-    public class Block : BaseEntity
+    public class Block : EntityBase
     {
+        public Guid Id { get; set; }
         public Guid EmployeeId { get; set; }
 
         public DateTime StartAt { get; set; }

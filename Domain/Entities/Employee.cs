@@ -1,10 +1,11 @@
-﻿using Domain.Entities.Common;
-using Domain.Entities.Identity;
+﻿using Domain.Entities.Identity;
 
 namespace Domain.Entities
 {
-    public class Employee : BaseEntity
+    public class Employee : EntityBase
     {
+        public Guid Id { get; set; }
+
         public Guid? UserId { get; set; }
 
         public string DisplayName { get; set; } = string.Empty;

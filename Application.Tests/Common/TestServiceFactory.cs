@@ -4,6 +4,7 @@ using Application.Common.Rules;
 using Application.Interfaces.Infrastructure.Services;
 using Application.Interfaces.Infrastructure.Tenancy;
 using Application.Interfaces.Persistence;
+using Application.Interfaces.Persistence.Filters;
 using Application.Tests.Common.Fake;
 using Application.UseCases.Users.Commands;
 using Application.UseCases.Users.Validators;
@@ -11,6 +12,7 @@ using Domain.Entities.Identity;
 using FluentValidation;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Context;
+using Infrastructure.Persistence.Filters;
 using Infrastructure.Tenancy;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -58,6 +60,8 @@ namespace Application.Tests.Common
             services.AddValidatorsFromAssembly(typeof(CreateUserValidator).Assembly);
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+            services.AddScoped<IFilterContext, FilterContext>();
 
             // =========================
             // MediatR

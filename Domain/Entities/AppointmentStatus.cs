@@ -1,11 +1,9 @@
 ﻿
-
-using Domain.Entities.Common;
-
 namespace Domain.Entities
 {
-    public class AppointmentStatus : BaseEntity
+    public class AppointmentStatus : EntityBase
     {
+        public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
 
         public string Color { get; set; } = string.Empty;

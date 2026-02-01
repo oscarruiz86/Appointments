@@ -1,11 +1,11 @@
 ﻿
 
-using Domain.Entities.Common;
 
 namespace Domain.Entities
 {
-    public class Appointment : BaseEntity
+    public class Appointment : EntityBase
     {
+        public Guid Id { get; set; }
         public Guid CustomerId { get; set; }
         public Guid EmployeeId { get; set; }
         public Guid ServiceId { get; set; }

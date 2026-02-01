@@ -1,7 +1,9 @@
 ﻿using Application.Interfaces.Persistence;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Context;
+using Infrastructure.Persistence.Filters;
 using Microsoft.EntityFrameworkCore;
+using Application.Interfaces.Persistence.Filters;
 
 namespace WebApi.Modules.Persistence
 {
@@ -22,6 +24,7 @@ namespace WebApi.Modules.Persistence
 
             services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IFilterContext, FilterContext>();
 
             return services;
         }

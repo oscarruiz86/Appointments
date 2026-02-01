@@ -1,10 +1,11 @@
 ﻿
 
+using Infrastructure.Persistence.DesignTime;
+using Infrastructure.Persistence.Filters;
 using Infrastructure.Tenancy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System;
 
 namespace Infrastructure.Persistence.Context
 {
@@ -27,9 +28,29 @@ namespace Infrastructure.Persistence.Context
 
             optionsBuilder.UseNpgsql(connectionString);
 
+            //var tenantProvider = new DesignTimeTenantProvider();
+
+            //return new ApplicationDbContext(optionsBuilder.Options, tenantProvider);
+
+            // ==============================
+            // Dependencias Design-Time
+            // ==============================
+
             var tenantProvider = new DesignTimeTenantProvider();
 
-            return new ApplicationDbContext(optionsBuilder.Options, tenantProvider);
+            var filterContext = new FilterContext
+            {
+                DisableTenantFilter = true,
+                DisableSoftDeleteFilter = false
+            };
+
+            var currentUserService = new DesignTimeCurrentUserService();
+
+            return new ApplicationDbContext(
+                optionsBuilder.Options,
+                tenantProvider,
+                filterContext,
+                currentUserService);
         }
     }
 }

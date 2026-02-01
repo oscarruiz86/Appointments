@@ -9,6 +9,7 @@ using Domain.Entities.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Application.Interfaces.Persistence.Filters;
 
 namespace Application.UseCases.Auth.Handlers
 {
@@ -18,25 +19,30 @@ namespace Application.UseCases.Auth.Handlers
         private readonly IPasswordHasher<ApplicationUser> _hasher;
         private readonly IJwtTokenGenerator _jwt;
         private readonly RuleFactory _ruleFactory;
+        private readonly IFilterContext _filterContext;
 
         public LoginHandler(
             IUnitOfWork uow,
             IPasswordHasher<ApplicationUser> hasher,
             RuleFactory ruleFactory,
+            IFilterContext filterContext,
             IJwtTokenGenerator jwt)
         {
             _uow = uow;
             _hasher = hasher;
             _jwt = jwt;
             _ruleFactory = ruleFactory;
+            _filterContext= filterContext;
         }
 
         public async Task<AuthResponseDto> Handle(LoginCommand request, CancellationToken ct)
         {
+
+            _filterContext.DisableTenantFilter = true;
+
             var repo = _uow.Repository<ApplicationUser, Guid>();
 
             var user = await repo.Query()
-                            .IgnoreQueryFilters()
                             .Include(x => x.Tenant)
                             .Include(x => x.UserRoles!)
                                 .ThenInclude(ur => ur.Role)

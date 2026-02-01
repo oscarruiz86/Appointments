@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.Auth;
 using Application.Interfaces.Persistence;
+using Application.Interfaces.Persistence.Filters;
 using Application.UseCases.Auth.Mappers;
 using Application.UseCases.Auth.Queries;
 using Domain.Entities.Identity;
@@ -12,20 +13,23 @@ namespace Application.UseCases.Auth.Handlers
         : IRequestHandler<GetUserTenantsQuery, IReadOnlyList<AuthTenantDto>>
     {
         private readonly IUnitOfWork _uow;
+        private readonly IFilterContext _filterContext;
 
-        public GetUserTenantsHandler(IUnitOfWork uow)
+        public GetUserTenantsHandler(IUnitOfWork uow, IFilterContext filterContext)
         {
             _uow = uow;
+            _filterContext = filterContext;
         }
 
         public async Task<IReadOnlyList<AuthTenantDto>> Handle(
             GetUserTenantsQuery request,
             CancellationToken ct)
         {
+            _filterContext.DisableTenantFilter = true;
+
             var repo = _uow.Repository<ApplicationUser, Guid>();
 
             return await repo.Query()
-                .IgnoreQueryFilters()
                 .Include(x => x.Tenant)
                 .Where(x =>
                     x.Email == request.Email &&
