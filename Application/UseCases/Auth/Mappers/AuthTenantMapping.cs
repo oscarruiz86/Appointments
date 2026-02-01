@@ -1,16 +1,16 @@
 ﻿using Application.Dtos.Auth;
-using Domain.Entities.Identity;
+using Domain.Entities;
 
 namespace Application.UseCases.Auth.Mappers
 {
     public static class AuthTenantMapping
     {
-        public static AuthTenantDto ToAuthTenantDto(this ApplicationUser user)
+        public static AuthTenantDto ToAuthTenantDto(this Tenant tenant)
         {
             return new AuthTenantDto
             {
-                TenantId = user.TenantId,
-                TenantName = user.Tenant!.Name
+                TenantId = tenant.Id,
+                TenantName = tenant.Name
             };
         }
     }

@@ -35,7 +35,7 @@ namespace Application.UseCases.Auth.Handlers
                     x.Email == request.Email &&
                     x.IsActive &&
                     x.Tenant.IsActive)
-                .Select(x => x.ToAuthTenantDto())
+                .Select(x => x.Tenant.ToAuthTenantDto())
                 .Distinct()
                 .ToListAsync(ct);
         }

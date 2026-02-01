@@ -36,7 +36,7 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpPost("tenants")]
+        [HttpGet("tenants")]
         public async Task<IActionResult> GetTenants(string email) {
             var result = await _mediator.Send(new GetUserTenantsQuery { Email = email });
             return Ok(result);
