@@ -9,13 +9,9 @@ namespace Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Employee> b)
         {
-            b.ToTable("employees");
+            b.ToTable("Employees");
 
             b.HasKey(x => x.Id);
-
-            b.Property(x => x.DisplayName)
-                .HasMaxLength(150)
-                .IsRequired();
 
             b.HasIndex(x => x.TenantId);
 

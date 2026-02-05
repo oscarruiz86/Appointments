@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260205022551_Fixdb")]
+    partial class Fixdb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,7 +142,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasIndex("TenantId", "Name")
                         .IsUnique();
 
-                    b.ToTable("AppointmentStatus", (string)null);
+                    b.ToTable("Appointment_status", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Block", b =>
@@ -583,7 +586,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("EmployeeId", "Weekday");
 
-                    b.ToTable("WorkingHours", (string)null);
+                    b.ToTable("working_hours", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Appointment", b =>

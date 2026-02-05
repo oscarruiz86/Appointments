@@ -11,6 +11,6 @@ namespace Domain.Entities
 
         public string Reason { get; set; } = string.Empty;
 
-        public required Employee Employee { get; set; }
+        public Employee? Employee { get; set; }
     }
 }

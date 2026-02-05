@@ -6,7 +6,6 @@ using Application.UseCases.Tenants.Mappers;
 using Application.UseCases.Tenants.Queries;
 using Domain.Entities;
 using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace Application.UseCases.Tenants.Handlers
 {
@@ -14,19 +13,15 @@ namespace Application.UseCases.Tenants.Handlers
     {
         private readonly IUnitOfWork _uow;
         private readonly AdminRule _adminRule;
-        private readonly ILogger<ListTenantsHandler> _logger;
 
-        public ListTenantsHandler(IUnitOfWork uow, AdminRule adminRule, ILogger<ListTenantsHandler> logger)
+        public ListTenantsHandler(IUnitOfWork uow, AdminRule adminRule)
         {
             _uow = uow;
             _adminRule = adminRule;
-            _logger = logger;
         }
 
         public async Task<List<TenantDto>> Handle(ListTenantsQuery query, CancellationToken ct)
-        {
-            _logger.LogInformation("analizas.....");
-            
+        {            
             await RuleChecker.CheckAsync(
                             _adminRule
                           );

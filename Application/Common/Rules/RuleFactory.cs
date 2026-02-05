@@ -1,12 +1,12 @@
 ﻿
 using Application.Common.Rules.Auth;
+using Application.Common.Rules.Employees;
 using Application.Common.Rules.Tenants;
 using Application.Common.Rules.Users;
+using Application.Dtos.Users;
 using Domain.Entities;
 using Domain.Entities.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Graph.Models;
 
 namespace Application.Common.Rules
 {
@@ -83,6 +83,26 @@ namespace Application.Common.Rules
 
         public PasswordMustBeValidRule PasswordMustBeValid(ApplicationUser user, string password)
             => ActivatorUtilities.CreateInstance<PasswordMustBeValidRule>(_provider, user, password);
+
+
+        // =========================================================
+        // EMPLOYEES
+        // =========================================================
+        public EmailAssociatedToEmployeeRule EmailAssociatedToEmployee(UserDto user)
+           => ActivatorUtilities.CreateInstance<EmailAssociatedToEmployeeRule>(_provider, user);
+
+        public EmployeeIsActiveRule EmployeeIsActive(Employee employee)
+           => ActivatorUtilities.CreateInstance<EmployeeIsActiveRule>(_provider, employee);
+
+        public EmployeeMustExistRule EmployeeMustExist(Employee employee)
+           => ActivatorUtilities.CreateInstance<EmployeeMustExistRule>(_provider, employee);
+
+        public CanViewEmployeeRule CanViewEmployee(Employee employee)
+           => ActivatorUtilities.CreateInstance<CanViewEmployeeRule>(_provider, employee);
+
+        public CanManageEmployeeRule CanManageEmployee(Guid tenantId)
+           => ActivatorUtilities.CreateInstance<CanManageEmployeeRule>(_provider, tenantId);
+
 
         //public IRule EmployeeBelongsToTenant(Guid employeeId)
         //    => ActivatorUtilities.CreateInstance<EmployeeBelongsToTenantRule>(

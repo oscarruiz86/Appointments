@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260203031954_Employee")]
+    partial class Employee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,7 +83,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("EmployeeId", "StartAt");
 
-                    b.ToTable("Appointments", (string)null);
+                    b.ToTable("appointments", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.AppointmentStatus", b =>
@@ -139,7 +142,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasIndex("TenantId", "Name")
                         .IsUnique();
 
-                    b.ToTable("AppointmentStatus", (string)null);
+                    b.ToTable("appointment_status", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Block", b =>
@@ -190,7 +193,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("EmployeeId", "StartAt");
 
-                    b.ToTable("Blocks", (string)null);
+                    b.ToTable("blocks", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Customer", b =>
@@ -273,7 +276,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -282,7 +285,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Employees", (string)null);
+                    b.ToTable("employees", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Identity.ApplicationRole", b =>
@@ -484,7 +487,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("Services", (string)null);
+                    b.ToTable("services", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Tenant", b =>
@@ -534,7 +537,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("IsActive");
 
-                    b.ToTable("Tenants", (string)null);
+                    b.ToTable("tenants", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.WorkingHour", b =>
@@ -583,7 +586,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("EmployeeId", "Weekday");
 
-                    b.ToTable("WorkingHours", (string)null);
+                    b.ToTable("working_hours", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Appointment", b =>
@@ -643,8 +646,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasOne("Domain.Entities.Identity.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("User");
                 });

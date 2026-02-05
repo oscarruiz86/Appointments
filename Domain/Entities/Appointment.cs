@@ -15,9 +15,9 @@ namespace Domain.Entities
 
         public Guid StatusId { get; set; } 
 
-        public required Customer Customer { get; set; }
-        public required Employee Employee { get; set; }
-        public required Service Service { get; set; }
-        public required AppointmentStatus Status { get; set; }
+        public Customer? Customer { get; set; }
+        public Employee? Employee { get; set; }
+        public Service? Service { get; set; }
+        public AppointmentStatus? Status { get; set; }
     }
 }

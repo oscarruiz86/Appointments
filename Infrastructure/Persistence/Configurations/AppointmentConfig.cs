@@ -9,7 +9,7 @@ namespace Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Appointment> b)
         {
-            b.ToTable("appointments");
+            b.ToTable("Appointments");
 
             b.HasKey(x => x.Id);
 

@@ -8,9 +8,7 @@ namespace Infrastructure.Persistence
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _context;
-
         private IDbContextTransaction? _transaction;
-
         private readonly ConcurrentDictionary<Type, object> _repositories = new();
 
         public UnitOfWork(ApplicationDbContext context)
@@ -18,7 +16,8 @@ namespace Infrastructure.Persistence
             _context = context;
         }
 
-        public IRepository<T, TKey> Repository<T, TKey>() where T : class
+        public IRepository<T, TKey> Repository<T, TKey>()
+            where T : class
         {
             return (IRepository<T, TKey>)_repositories.GetOrAdd(
                 typeof(T),
@@ -26,22 +25,23 @@ namespace Infrastructure.Persistence
             );
         }
 
-        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-            => await _context.SaveChangesAsync(cancellationToken);
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+            => _context.SaveChangesAsync(cancellationToken);
 
         public async Task BeginTransactionAsync()
             => _transaction = await _context.Database.BeginTransactionAsync();
 
         public async Task CommitAsync()
-        {
-            await _context.SaveChangesAsync();
-            await _transaction!.CommitAsync();
-        }
+            => await _transaction!.CommitAsync();
 
         public async Task RollbackAsync()
-            => await _transaction!.RollbackAsync();
+        {
+            if (_transaction != null)
+                await _transaction.RollbackAsync();
+        }
 
         public void Dispose()
             => _context.Dispose();
     }
+
 }

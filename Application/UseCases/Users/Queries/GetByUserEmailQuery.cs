@@ -5,7 +5,8 @@ using MediatR;
 
 namespace Application.UseCases.Users.Queries
 {
-    public class MeQuery : IRequest<UserDto>, IRequireActiveTenant
+    public class GetByUserEmailQuery : IRequest<UserDto?>, IRequireActiveTenant
     {
+        public string Email { get; set; } = string.Empty;
     }
 }

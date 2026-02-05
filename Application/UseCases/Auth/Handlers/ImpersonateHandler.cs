@@ -3,11 +3,13 @@ using Application.Common.Rules.Security;
 using Application.Dtos.Auth;
 using Application.Interfaces.Infrastructure.Services;
 using Application.Interfaces.Persistence;
+using Application.Interfaces.Persistence.Filters;
 using Application.UseCases.Auth.Commands;
 using Application.UseCases.Auth.Mappers;
 using Domain.Entities;
 using Domain.Entities.Identity;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.UseCases.Auth.Handlers
@@ -19,12 +21,14 @@ namespace Application.UseCases.Auth.Handlers
         private readonly AdminRule _adminRule;
         private readonly RuleFactory _ruleFactory;
         private readonly IJwtTokenGenerator _jwt;
+        private readonly IFilterContext _filterContext;
 
         public ImpersonateHandler(
             IUnitOfWork uow,
             ICurrentUserService currentUser,
             AdminRule adminRule,
             RuleFactory ruleFactory,
+            IFilterContext filterContext,
             IJwtTokenGenerator jwt)
         {
             _uow = uow;
@@ -32,10 +36,12 @@ namespace Application.UseCases.Auth.Handlers
             _adminRule = adminRule;
             _ruleFactory = ruleFactory;
             _jwt = jwt;
+            _filterContext = filterContext;
         }
 
         public async Task<AuthResponseDto> Handle(ImpersonateCommand tenant, CancellationToken ct)
         {
+            _filterContext.DisableTenantFilter = true;
             var repoUser = _uow.Repository<ApplicationUser, Guid>();
             var repoRole = _uow.Repository<UserRole, Guid>();
             var repoTenant = _uow.Repository<Tenant, Guid>();
@@ -56,7 +62,7 @@ namespace Application.UseCases.Auth.Handlers
                 .Take(1)
                 .ToListAsync();
 
-            user.TenantId = tenant.TenantId;
+            user.TenantId = tenantUser.Id;
             var token = _jwt.Generate(user);
 
             return user.ToAuthResponse(token);

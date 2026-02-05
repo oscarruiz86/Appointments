@@ -7,7 +7,7 @@ namespace Application.UseCases.Users.Mappers
 {
     public static class UserMapping
     {
-        public static UserDto ToUser(this ApplicationUser user)
+        public static UserDto ToUser(this ApplicationUser? user)
         {
             return new UserDto
             {

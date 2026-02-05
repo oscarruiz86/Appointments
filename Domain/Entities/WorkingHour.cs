@@ -12,6 +12,6 @@ namespace Domain.Entities
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
 
-        public required Employee Employee { get; set; }
+        public Employee? Employee { get; set; }
     }
 }
