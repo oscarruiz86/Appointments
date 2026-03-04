@@ -1,13 +1,15 @@
 ﻿
-namespace Domain.Entities
+using Application.Common.Tenancy;
+using MediatR;
+
+namespace Application.UseCases.Services.Commands
 {
-    public class Service : EntityBase
+    public class UpdateServiceCommand : IRequest, IRequireActiveTenant
     {
-        public Guid Id { get; set; }
+        public Guid ServiceId { get; set; }
         public string Name { get; set; } = string.Empty;
         public int DurationMinutes { get; set; }
         public decimal Price { get; set; }
         public string Description { get; set; } = string.Empty;
-        public bool IsActive { get; set; }
     }
 }
